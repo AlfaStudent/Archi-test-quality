@@ -9,6 +9,7 @@ import {
 import { Expose } from 'class-transformer';
 
 import { BadRequestException } from '@nestjs/common';
+import { Product } from '../../../product/domain/entity/product.entity';
 
 export interface CreateOrderCommand {
   items: ItemDetailCommand[];
@@ -57,6 +58,10 @@ export class Order {
   })
   @Expose({ groups: ['group_orders'] })
   orderItems: OrderItem[];
+
+  @Expose({ groups: ['group_orders'] })
+  product: Product[];
+
 
   @Column({ nullable: true })
   @Expose({ groups: ['group_orders'] })

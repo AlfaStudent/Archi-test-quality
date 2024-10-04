@@ -3,8 +3,6 @@ import { OrderRepositoryInterface } from 'src/order/domain/port/persistance/orde
 import { Product } from 'src/product/domain/entity/product.entity';
 import { ProductRepositoryInterface } from 'src/product/domain/port/persistance/product.repository.interface';
 
-const DECREMENTED_STOCK = 1;
-
 export class DeleteProductService {
 
   constructor(

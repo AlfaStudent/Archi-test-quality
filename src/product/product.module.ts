@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import OrderController from './infrastructure/presentation/order.controller';
-import { Order } from './domain/entity/order.entity';
-import { OrderItem } from './domain/entity/order-item.entity';
+import OrderController from 'src/order/infrastructure/presentation/order.controller';
+import { OrderItem } from 'src/order/domain/entity/order-item.entity';
 import { CreateOrderService } from 'src/order/application/use-case/create-order.service';
 import { PayOrderService } from 'src/order/application/use-case/pay-order.service';
 import { CancelOrderService } from 'src/order/application/use-case/cancel-order.service';
@@ -16,6 +15,7 @@ import { PdfGeneratorService } from 'src/order/infrastructure/pdf/pdf-generator.
 import ProductRepositoryTypeOrm from '../product/infrastructure/persistance/product.repository';
 import { ProductRepositoryInterface } from './domain/port/persistance/product.repository.interface';
 import { CreateProductService } from './application/use-case/create-product.service';
+import { Order } from 'src/order/domain/entity/order.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Order, OrderItem])],

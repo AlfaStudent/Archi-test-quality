@@ -1,5 +1,7 @@
+import { OrderItem } from 'src/order/domain/entity/order-item.entity';
 import { Order } from '../../../order/domain/entity/order.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { int } from 'aws-sdk/clients/datapipeline';
 
 export interface ItemDetailCommand {
   productName: string;
@@ -35,8 +37,9 @@ export class Product {
   @Column()
   description: string;
 
-  @ManyToOne(() => Order, (order) => order.orderItems)
+  @ManyToOne(() => OrderItem, (orderItem) => orderItem.product)
   order: Order;
+
 
   constructor(itemCommand: ItemDetailCommand) {
     if (!itemCommand) {
@@ -67,5 +70,17 @@ export class Product {
     this.price = itemCommand.price;
     this.description = itemCommand.description;
     this.stock = itemCommand.stock;
-    itemCommand.isActive? this.isActive = itemCommand.isActive : this.isActive;}
+    itemCommand.isActive? this.isActive = itemCommand.isActive : this.isActive;
+  }
+
+  decrementStock(quantity: int): void {
+    if (this.stock < quantity) {
+      throw new Error('Stock insuffisant.');
+    }
+    this.stock -= quantity;
+  }
+
+  incrementStock(quantity: int): void {
+    this.stock += quantity;
+  }
 }

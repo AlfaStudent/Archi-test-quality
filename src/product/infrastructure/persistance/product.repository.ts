@@ -1,6 +1,7 @@
 import { InjectDataSource } from '@nestjs/typeorm';
-import { Product } from 'src/order/domain/entity/product.entity';
-import { ProductRepositoryInterface } from 'src/order/domain/port/persistance/product.repository.interface';
+import { Order } from 'src/order/domain/entity/order.entity';
+import { Product } from "src/product/domain/entity/product.entity";
+import { ProductRepositoryInterface } from 'src/product/domain/port/persistance/product.repository.interface';
 import { DataSource, Repository } from 'typeorm';
 
 export default class ProductRepositoryTypeOrm
@@ -14,7 +15,7 @@ export default class ProductRepositoryTypeOrm
   async findById(id: string): Promise<Product | null> { 
     const queryBuilder = this.createQueryBuilder('product');
 
-    
+
     queryBuilder.where('order.id = :id', { id });
 
     return queryBuilder.getOne();
@@ -40,5 +41,13 @@ export default class ProductRepositoryTypeOrm
     queryBuilder.where('order.id = :id', { id });
 
     await queryBuilder.delete().execute();
+  }
+
+  async findProductWithOrder(id: string): Promise<Product[] | null> {
+   return;
+  }
+
+  async findProductwithActive(): Promise<Product[] | null> {
+    return;
   }
 }

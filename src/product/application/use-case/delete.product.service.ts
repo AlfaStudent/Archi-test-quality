@@ -1,5 +1,5 @@
 import { NotFoundException } from '@nestjs/common';
-import { Order } from 'src/order/domain/entity/order.entity';
+import { OrderRepositoryInterface } from 'src/order/domain/port/persistance/order.repository.interface';
 import { Product } from 'src/product/domain/entity/product.entity';
 import { ProductRepositoryInterface } from 'src/product/domain/port/persistance/product.repository.interface';
 
@@ -7,7 +7,10 @@ const DECREMENTED_STOCK = 1;
 
 export class DeleteProductService {
 
-  constructor(private readonly productRepository: ProductRepositoryInterface) {}
+  constructor(
+    private readonly productRepository: ProductRepositoryInterface,
+    private readonly orderRepository: OrderRepositoryInterface
+) {}
 
 
   public async execute(productId: string): Promise<Product> {
@@ -17,13 +20,12 @@ export class DeleteProductService {
       throw new NotFoundException('Pas de produit');
     }
 
-    const productsWithOrder: Product[]  = await this.productRepository.findProductWithOrder(productId);
-    if (productsWithOrder.length > 0) {
+    const ordersContainingProduct = await this.orderRepository.findOrdersContainingProduct(productId);
+    if (ordersContainingProduct.length > 0) {
       throw new NotFoundException('Produit lié à une commande');
     }
 
     this.productRepository.deleteProduct(product.id);
-    product.decrementStock(DECREMENTED_STOCK);
     
 
     return;

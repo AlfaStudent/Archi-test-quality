@@ -3,7 +3,7 @@ import { Order } from '../../../order/domain/entity/order.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { int } from 'aws-sdk/clients/datapipeline';
 
-export interface ItemDetailCommand {
+export interface ProductCommand {
   productName: string;
   price: number;
   stock: number;
@@ -41,36 +41,36 @@ export class Product {
   order: Order;
 
 
-  constructor(itemCommand: ItemDetailCommand) {
-    if (!itemCommand) {
+  constructor(productCommand: ProductDetailCommand) {
+    if (!productCommand) {
       return;
     }
-    if (itemCommand.productName || itemCommand.price || itemCommand.description) {
+    if (productCommand.productName || productCommand.price || productCommand.description) {
       throw new Error(
         'Le nom, le prix et la description sont obligatoire. ',
       );
     }
-    this.stock = itemCommand.stock != null ? itemCommand.stock : 0;
-    this.productName = itemCommand.productName;
-    this.price = itemCommand.price;
-    this.description = itemCommand.description;
-    this.stock = itemCommand.stock;
-    this.isActive = itemCommand.isActive;
+    this.stock = productCommand.stock != null ? productCommand.stock : 0;
+    this.productName = productCommand.productName;
+    this.price = productCommand.price;
+    this.description = productCommand.description;
+    this.stock = productCommand.stock;
+    this.isActive = productCommand.isActive;
 
   }
 
-  public updateProduct(itemCommand: ItemDetailCommand): void {
-    if (itemCommand.productName || itemCommand.price || itemCommand.description) {
+  public updateProduct(productCommand: ProductCommand): void {
+    if (productCommand.productName || productCommand.price || productCommand.description) {
       throw new Error(
         'Le nom, le prix et la description sont obligatoire. ',
       );
     }
-    this.stock = itemCommand.stock != null ? itemCommand.stock : 0;
-    this.productName = itemCommand.productName;
-    this.price = itemCommand.price;
-    this.description = itemCommand.description;
-    this.stock = itemCommand.stock;
-    itemCommand.isActive? this.isActive = itemCommand.isActive : this.isActive;
+    this.stock = productCommand.stock != null ? productCommand.stock : 0;
+    this.productName = productCommand.productName;
+    this.price = productCommand.price;
+    this.description = productCommand.description;
+    this.stock = productCommand.stock;
+    productCommand.isActive? this.isActive = productCommand.isActive : this.isActive;
   }
 
   decrementStock(quantity: int): void {

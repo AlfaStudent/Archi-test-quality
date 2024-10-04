@@ -217,6 +217,9 @@ export class Order {
     this.status = OrderStatus.CANCELED;
     this.cancelAt = new Date('NOW');
     this.cancelReason = cancelReason;
+    this.orderItems.forEach((orderItem) => {
+      orderItem.product.stock += orderItem.quantity;
+    });
   }
 
   getInvoiceInfos(): string {
@@ -229,7 +232,7 @@ export class Order {
     }
 
     const itemsNames = this.orderItems
-      .map((item) => item.productName)
+      .map((item) => item.product.productName)
       .join(', ');
     return `invoice number ${this.id}, with items: ${itemsNames}`;
   }

@@ -6,6 +6,9 @@ export class CreateOrderService {
 
   async execute(createOrderCommand: CreateOrderCommand): Promise<Order> {
     const order = new Order(createOrderCommand);
+    order.orderItems.forEach((orderItem) => {
+      orderItem.product.stock -= orderItem.quantity;
+    });
 
     return await this.orderRepository.save(order);
   }

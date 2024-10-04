@@ -21,7 +21,13 @@ describe('Get Orders (e2e)', () => {
 
     // Création d'une commande en BDD de test
     orderRepository = moduleFixture.get('OrderRepository');
-    order1 = new Order('John Doe', []);
+    const createOrderCommand = {
+      items : [{productName: 'item1', quantity: 10, price: 1}],
+      customerName: 'John Doe',
+      shippingAddress: '123 rue de la ville',
+      invoiceAddress: '123 rue de la ville',
+    };
+    order1 = new Order(createOrderCommand);
     await orderRepository.save(order1);
   });
   it('should return all', async () => {

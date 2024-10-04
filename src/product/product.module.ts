@@ -14,6 +14,8 @@ import { GenerateInvoiceService } from 'src/order/application/use-case/generate-
 import { PdfGeneratorServiceInterface } from 'src/order/domain/port/pdf/pdf-generator.service.interface';
 import { PdfGeneratorService } from 'src/order/infrastructure/pdf/pdf-generator.service';
 import ProductRepositoryTypeOrm from '../product/infrastructure/persistance/product.repository';
+import { ProductRepositoryInterface } from './domain/port/persistance/product.repository.interface';
+import { CreateProductService } from './application/use-case/create-product.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Order, OrderItem])],
@@ -68,18 +70,18 @@ import ProductRepositoryTypeOrm from '../product/infrastructure/persistance/prod
     },
 
     // pour pouvoir gérer l'inversion de dépendance
-    // du service CreateOrderService
+    // du service CreateProductService
     // j'utilise le système de useFactory de nest
     {
       // quand j'enregistre la classe CreateOrderService
-      provide: CreateOrderService,
+      provide: CreateProductService,
       // je demande à Nest Js de créer une instance de cette classe
-      useFactory: (orderRepository: OrderRepositoryInterface) => {
-        return new CreateOrderService(orderRepository);
+      useFactory: (productRepository: ProductRepositoryInterface) => {
+        return new CreateProductService(productRepository);
       },
       // en lui injectant une instance de OrderRepositoryTypeOrm
       // à la place de l'interface qui est utilisée dans le constructeur de CreateOrderService
-      inject: [OrderRepositoryTypeOrm],
+      inject: [ProductRepositoryTypeOrm],
     },
   ],
 })

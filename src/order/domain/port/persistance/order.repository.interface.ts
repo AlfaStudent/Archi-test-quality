@@ -1,4 +1,5 @@
 import { Order } from 'src/order/domain/entity/order.entity';
+import { Product } from 'src/product/domain/entity/product.entity';
 
 export interface OrderRepositoryInterface {
   save(order: Order): Promise<Order>;
